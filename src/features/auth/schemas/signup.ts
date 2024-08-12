@@ -21,8 +21,8 @@ const signupSchema: ObjectSchema = Joi.object().keys({
   avatarColor: Joi.string().required().messages({
     "any.required": "Avatar color is required"
   }),
-  avatarImage: Joi.string().required().messages({
-    "any.required": "Avatar color is required"
+  avatarImage: Joi.string().messages({
+    "any.required": "Avatar Image is required"
   })
 })
 

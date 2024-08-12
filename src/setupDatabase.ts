@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { config } from "@root/config";
 import Logger from "bunyan";
+import { redisConnection } from "@service/redis/redis.connection";
 
 const log: Logger = config.createLogger("setupDatabase");
 
@@ -9,7 +10,8 @@ export default () => {
     mongoose
       .connect("mongodb://localhost:27017/chattyapp-backend")
       .then(() => {
-        log.info("Successfully connected to database.");
+        log.info('Successfully connected to database.');
+        redisConnection.connect();
       })
       .catch((error) => {
         log.error("Error Connecting to database", error);
