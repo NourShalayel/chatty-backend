@@ -7,7 +7,7 @@ import { IUserJob } from "@auth/user/interfaces/user.interface";
 class UserQueue extends BaseQueue {
   constructor(){
     super('user');
-    this.processJob('addUserData' , 5 , userWorker.addUserToDB)
+    this.processJob('addUserToDB', 5, userWorker.addUserToDB);
   }
 
   public addUserJob(name : string , data : any):void{
