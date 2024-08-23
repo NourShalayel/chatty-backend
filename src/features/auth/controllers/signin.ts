@@ -1,15 +1,14 @@
-import { Request , Response } from "express";
-import { config } from "@root/config";
+import { Request, Response } from 'express';
+import { config } from '@root/config';
 import JWT from 'jsonwebtoken';
 import { joiValidation } from '@global/decorators/joi-validation.decorators';
 import HTTP_STATUS from 'http-status-codes';
 import { authService } from '@service/db/auth.service';
+import { IAuthDocument } from '@auth/interfaces/auth.interface';
 import { BadRequestError } from '@global/helpers/error-handler';
-import {signinSchema} from '@auth/schemas/signin'
-import { IAuthDocument } from "@auth/interfaces/auth.interface";
-import { IUserDocument } from "@auth/user/interfaces/user.interface";
-import { userService } from "@service/db/user.service";
-
+import { userService } from '@service/db/user.service';
+import { IUserDocument } from '@auth/user/interfaces/user.interface';
+import { signinSchema } from '@auth/schemas/signin';
 
 export class SignIn {
   @joiValidation(signinSchema)
@@ -27,7 +26,7 @@ export class SignIn {
     const user: IUserDocument = await userService.getUserByAuthId(`${existingUser._id}`);
     const userJwt: string = JWT.sign(
       {
-        userId: user._id,
+        userId: existingUser._id,
         uId: existingUser.uId,
         email: existingUser.email,
         username: existingUser.username,
