@@ -7,8 +7,13 @@ import { authService } from '@service/db/auth.service';
 import { IAuthDocument } from '@auth/interfaces/auth.interface';
 import { BadRequestError } from '@global/helpers/error-handler';
 import { userService } from '@service/db/user.service';
-import { IUserDocument } from '@auth/user/interfaces/user.interface';
+import { IResetPasswordParams, IUserDocument } from '@auth/user/interfaces/user.interface';
 import { signinSchema } from '@auth/schemas/signin';
+import { forgotPasswordTemplate } from '@service/emails/templates/forgot-password/forgot-password-template';
+import { emailQueue } from '@service/queues/email.queue';
+import moment from 'moment';
+import publicIP from 'ip';
+// import { mailTransport } from '@service/emails/mail.transport';
 
 export class SignIn {
   @joiValidation(signinSchema)
@@ -44,6 +49,21 @@ export class SignIn {
       uId: existingUser!.uId,
       createdAt: existingUser!.createdAt
     } as IUserDocument;
+
+    // await mailTransport.sendEmail('cyrus17@ethereal.email' , 'Testing Development email' , 'this is a test email to show that development email sender works .');
+      // const templateParams : IResetPasswordParams = {
+      //   username : existingUser.username ,
+      //   email : existingUser.email,
+      //   ipaddress : publicIP.address(),
+      //   date : moment().format('YYYY-MM-DD HH:mm:ss')
+      // }
+      // const resetLink = `${config.CLIENT_URL}/reset-password?token=123342342343244` ;
+      // const template : string = forgotPasswordTemplate.passwordResrtTemplate(existingUser.username! , resetLink);
+      // // emailQueue.addEmailJob('forgotPasswordEmail' , {template , receiverEmail : 'damon.baumbach40@ethereal.email' , subject : 'Reset your password'})
+      // emailQueue.addEmailJob('forgotPasswordEmail' , {template , receiverEmail : 'damon.baumbach40@ethereal.email' , subject : 'Password Reset confirmation'})
+
+      // console.log("send email done .");
+
     res.status(HTTP_STATUS.OK).json({ message: 'User login successfully', user: userDocument, token: userJwt });
   }
 }
