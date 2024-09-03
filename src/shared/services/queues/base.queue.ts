@@ -5,13 +5,14 @@ import { createBullBoard} from '@bull-board/api';
 import { BullAdapter } from '@bull-board/api/bullAdapter';
 import { config } from '@root/config';
 import { IAuthJob } from '@auth/interfaces/auth.interface';
-import { IEmailJob } from '@auth/user/interfaces/user.interface';
+import { IEmailJob } from '@user/interfaces/user.interface';
+import { IPostJobData } from '@post/interfaces/post.interface';
 
 
 type IBaseJobData =
   | IAuthJob
   | IEmailJob
-  // | IPostJobData
+  | IPostJobData
   // | IReactionJob
   // | ICommentJob
   // | IFollowerJobData

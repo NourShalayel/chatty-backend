@@ -9,10 +9,10 @@ import { emailSchema, passwordSchema } from '@auth/schemas/password';
 import crypto from 'crypto';
 import { forgotPasswordTemplate } from '@service/emails/templates/forgot-password/forgot-password-template';
 import { emailQueue } from '@service/queues/email.queue';
-import { IResetPasswordParams } from '@auth/user/interfaces/user.interface';
 import moment from 'moment';
 import publicIP from 'ip';
 import { resetPasswordTemplate } from '@service/emails/templates/reset-password/reset-password-template';
+import { IResetPasswordParams } from '@user/interfaces/user.interface';
 
 
 export class Password {

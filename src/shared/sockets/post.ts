@@ -1,7 +1,7 @@
 import { Server, Socket } from 'socket.io';
 
 
-let socketIOPostObject: Server;
+export let socketIOPostObject: Server;
 
 export class SocketIOPostHandler {
   private io: Server;

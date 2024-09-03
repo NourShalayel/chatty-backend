@@ -10,13 +10,13 @@ import { authService } from '@service/db/auth.service';
 import { UploadApiResponse } from 'cloudinary';
 import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
-import { IUserDocument } from '@auth/user/interfaces/user.interface';
 import { UserCache } from '@service/redis/user.cache';
 import { omit, Omit } from 'lodash';
 import { authQueue } from '@service/queues/auth.queue';
 import { userQueue } from '@service/queues/user.queue';
 import JWT from 'jsonwebtoken';
 import { config } from '@root/config';
+import { IUserDocument } from '@user/interfaces/user.interface';
 const userCache: UserCache = new UserCache();
 
 export class SignUp {

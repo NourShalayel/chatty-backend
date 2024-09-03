@@ -1,9 +1,10 @@
-import { IUserDocument } from "@auth/user/interfaces/user.interface";
-import { UserModel } from "@auth/user/models/user.schema";
+
 import mongoose from 'mongoose';
 import { indexOf } from 'lodash';
 // import { followerService } from '@service/db/follower.service';
 import { AuthModel } from '@auth/models/auth.schema';
+import { IUserDocument } from '@user/interfaces/user.interface';
+import { UserModel } from '@user/models/user.schema';
 
 class UserService {
   public async addUserData(data: IUserDocument): Promise<void> {
