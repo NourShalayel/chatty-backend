@@ -7,12 +7,12 @@ import { authService } from '@service/db/auth.service';
 import { IAuthDocument } from '@auth/interfaces/auth.interface';
 import { BadRequestError } from '@global/helpers/error-handler';
 import { userService } from '@service/db/user.service';
-import { IResetPasswordParams, IUserDocument } from '@auth/user/interfaces/user.interface';
 import { signinSchema } from '@auth/schemas/signin';
 import { forgotPasswordTemplate } from '@service/emails/templates/forgot-password/forgot-password-template';
 import { emailQueue } from '@service/queues/email.queue';
 import moment from 'moment';
 import publicIP from 'ip';
+import { IUserDocument } from '@user/interfaces/user.interface';
 // import { mailTransport } from '@service/emails/mail.transport';
 
 export class SignIn {
