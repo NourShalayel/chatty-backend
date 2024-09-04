@@ -5,7 +5,7 @@ import mongoose, { Document } from 'mongoose';
 
 
 //move this to reactions interface later
-interface IReactions {
+export interface IReactions {
   like: number;
   love: number;
   haha: number;
