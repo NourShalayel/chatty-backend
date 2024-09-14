@@ -22,6 +22,7 @@ const config: Config.InitialOptions = {
       statements: 1
     }
   },
+
   coverageReporters: ['text-summary', 'lcov'],
   moduleNameMapper: {
     '@auth/(.*)': ['<rootDir>/src/features/auth/$1'],
