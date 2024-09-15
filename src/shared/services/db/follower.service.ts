@@ -4,10 +4,14 @@ import { ObjectId, BulkWriteResult } from 'mongodb';
 import mongoose, { Query } from 'mongoose';
 import { IQueryDeleted, IQueryComplete } from '@post/interfaces/post.interface';
 import { IUserDocument } from '@user/interfaces/user.interface';
+import { INotificationDocument, INotificationTemplate } from '@notification/interfaces/notification.interface';
+import { NotificationModel } from '@notification/models/notification.schema';
+import { socketIONotificationObject } from '@socket/notification';
 import { emailQueue } from '@service/queues/email.queue';
 import { UserCache } from '@service/redis/user.cache';
 import { map } from 'lodash';
 import { IFollowerDocument, IFollowerData } from '@follower/interfaces/followers.interface';
+import { notificationTemplate } from '@service/emails/templates/notifications/notification-template';
 
 const userCache: UserCache = new UserCache();
 
@@ -22,7 +26,7 @@ class FollowerService {
       followerId: followerObjectId
     });
 
-    const users: any = UserModel.bulkWrite([
+    const users: Promise<BulkWriteResult> = UserModel.bulkWrite([
       {
         updateOne: {
           filter: { _id: userId },
@@ -39,7 +43,36 @@ class FollowerService {
 
     const response: [BulkWriteResult, IUserDocument | null] = await Promise.all([users, userCache.getUserFromCache(followeeId)]);
 
-
+    if (response[1]?.notifications.follows && userId !== followeeId) {
+      const notificationModel: INotificationDocument = new NotificationModel();
+      const notifications = await notificationModel.insertNotification({
+        userFrom: userId,
+        userTo: followeeId,
+        message: `${username} is now following you.`,
+        notificationType: 'follows',
+        entityId: new mongoose.Types.ObjectId(userId),
+        createdItemId: new mongoose.Types.ObjectId(following._id),
+        createdAt: new Date(),
+        comment: '',
+        post: '',
+        imgId: '',
+        imgVersion: '',
+        gifUrl: '',
+        reaction: ''
+      });
+      socketIONotificationObject.emit('insert notification', notifications, { userTo: followeeId });
+      const templateParams: INotificationTemplate = {
+        username: response[1].username!,
+        message: `${username} is now following you.`,
+        header: 'Follower Notification'
+      };
+      const template: string = notificationTemplate.notificationMessageTemplate(templateParams);
+      emailQueue.addEmailJob('followersEmail', {
+        receiverEmail: response[1].email!,
+        template,
+        subject: `${username} is now following you.`
+      });
+    }
   }
 
   public async removeFollowerFromDB(followeeId: string, followerId: string): Promise<void> {
@@ -51,7 +84,7 @@ class FollowerService {
       followerId: followerObjectId
     });
 
-    const users: any = UserModel.bulkWrite([
+    const users: Promise<BulkWriteResult> = UserModel.bulkWrite([
       {
         updateOne: {
           filter: { _id: followerId },
