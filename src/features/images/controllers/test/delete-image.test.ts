@@ -44,6 +44,7 @@ describe('Delete', () => {
     });
   });
 
+
   it('should send correct json response for background image upload', async () => {
     const req: Request = imagesMockRequest({}, {}, authUserPayload, { bgImageId: '12345' }) as Request;
     const res: Response = imagesMockResponse();
